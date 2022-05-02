@@ -10,6 +10,9 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Path("/v1/pets")
 @Produces("application/json")
 public class PetResource {
@@ -58,10 +61,23 @@ public class PetResource {
 	}
 
 	@APIResponses(value = {
-			@APIResponse(responseCode = "200", description = "All Pets", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(ref = "Pet"))) })
+			@APIResponse(responseCode = "200", description = "All Pets (Optionally filtered)", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(ref = "Pet"))) })
 	@GET
-	public Response getPets() {
-		return Response.ok(petDB.getAll()).build();
+	public Response getPets(@QueryParam("type") String type,
+							@QueryParam("name") String name,
+							@QueryParam("age") Integer age) {
+		List<Pet> filteredPets = new ArrayList<>(petDB.getAll());
+		if (type != null) { // Filter by type
+			filteredPets.removeIf(pet -> !pet.getPetType().equals(type)); // https://stackoverflow.com/a/1385698
+		}
+		if (name != null) { // Filter by name
+			filteredPets.removeIf(pet -> !pet.getPetName().equals(name)); // https://stackoverflow.com/a/1385698
+		}
+		if (age != null) { // Filter by age
+			filteredPets.removeIf(pet -> !pet.getPetAge().equals(age)); // https://stackoverflow.com/a/1385698
+		}
+
+		return Response.ok(filteredPets).build();
 	}
 
 	@APIResponses(value = {
