@@ -118,4 +118,83 @@ Open [http://localhost:16686/](http://localhost:16686/) to see the traces. Mind 
 
 ## Deploying Application
 
-To deploy the demo app on a docker-compose please visit [./deploy](https://github.com/rasika/petstore/tree/master/deploy)
+To deploy the demo app on a docker-compose please visit [./deploy](https://github.com/naushikha/petstore/tree/master/deploy)
+
+## Accessing API using cURL 
+
+## Pets Resource
+
+Populate default pets
+
+    curl -X GET "http://0.0.0.0:8080/v1/pets/populate-defaults" -H  "accept: application/json"
+
+Add a new pet
+
+    curl -X POST "http://0.0.0.0:8080/v1/pets/add" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"pet_age\":1,\"pet_id\":1,\"pet_name\":\"Bubbles\",\"pet_type\":\"Fish \"}"
+
+Get pet by ID
+ 
+    curl -X GET "http://0.0.0.0:8080/v1/pets/1" -H  "accept: application/json"
+
+Get all pets
+
+    curl -X GET "http://0.0.0.0:8080/v1/pets" -H  "accept: application/json"
+
+Search pets by age
+
+    curl -X GET "http://0.0.0.0:8080/v1/pets?age=1" -H  "accept: application/json"
+
+Search pets by name
+
+    curl -X GET "http://0.0.0.0:8080/v1/pets?name=Bubbles" -H  "accept: application/json"
+
+Search pets by type
+
+    curl -X GET "http://0.0.0.0:8080/v1/pets?type=Fish" -H  "accept: application/json"
+
+Search pets by any combination of age, name or type (omit query params as needed)
+
+    curl -X GET "http://0.0.0.0:8080/v1/pets?age=1&name=Bubbles&type=Fish" -H  "accept: application/json"
+
+Update pet by ID
+
+    curl -X PUT "http://0.0.0.0:8080/v1/pets/update/1" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"pet_age\":1,\"pet_id\":2,\"pet_name\":\"Gini\",\"pet_type\":\"Cat\"}"
+
+Delete pet by ID
+
+    curl -X DELETE "http://0.0.0.0:8080/v1/pets/delete/1" -H  "accept: application/json"
+
+## Pet-Types Resource
+Populate default pet types
+
+    curl -X GET "http://0.0.0.0:8080/v1/pet-types/populate-defaults" -H  "accept: application/json"
+
+Add a new pet type
+
+    curl -X POST "http://0.0.0.0:8080/v1/pet-types/add" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"pet_type_id\":1,\"pet_type_name\":\"Turtle\"}"
+
+Get pet type by ID
+
+    curl -X GET "http://0.0.0.0:8080/v1/pet-types/1" -H  "accept: application/json"
+
+Get all pet types
+
+    curl -X GET "http://0.0.0.0:8080/v1/pet-types" -H  "accept: application/json"
+
+Update pet type by ID
+
+    curl -X PUT "http://0.0.0.0:8080/v1/pet-types/update/1" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"pet_type_id\":2,\"pet_type_name\":\"Monkey\"}"
+
+Delete pet type by ID
+
+    curl -X DELETE "http://0.0.0.0:8080/v1/pet-types/delete/1" -H  "accept: application/json"
+
+## Testing API using JUnit 
+
+Run test suite using,
+
+    ./gradlew test
+
+Test results can be accessed at,
+
+    ./build/reports/tests/test/index.html
